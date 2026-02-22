@@ -1,0 +1,281 @@
+.import-process-page {
+    min-height: 100vh;
+}
+
+/* Hero Section */
+.process-hero {
+    padding: var(--space-3xl) 0 var(--space-2xl);
+    background: linear-gradient(135deg,
+            var(--color-bg-primary) 0%,
+            var(--color-bg-secondary) 50%,
+            var(--color-bg-primary) 100%);
+    text-align: center;
+}
+
+.page-title {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--space-md);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Steps Grid */
+.process-steps {
+    padding: var(--space-3xl) 0;
+    background: var(--color-bg-secondary);
+}
+
+.steps-grid {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: var(--space-2xl) 0;
+}
+
+/* Center vertical line */
+.steps-grid::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg,
+            var(--color-accent-primary) 0%,
+            var(--color-accent-secondary) 100%);
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+.step-card {
+    position: relative;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--space-md) var(--space-lg);
+    margin-bottom: var(--space-xl);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    width: 42%;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+}
+
+/* Alternating left and right - start from center */
+.step-card:nth-child(odd) {
+    margin-left: 0;
+    margin-right: auto;
+    transform: translateX(50%);
+}
+
+.step-card:nth-child(even) {
+    margin-left: auto;
+    margin-right: 0;
+    transform: translateX(-50%);
+}
+
+.step-card.visible {
+    opacity: 1;
+}
+
+.step-card.visible:nth-child(odd) {
+    transform: translateX(0);
+    animation: slideFromCenter 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.step-card.visible:nth-child(even) {
+    transform: translateX(0);
+    animation: slideFromCenterRight 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideFromCenter {
+    0% {
+        opacity: 0;
+        transform: translateX(50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideFromCenterRight {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.step-card:hover {
+    border-color: var(--color-accent-primary);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(30, 64, 175, 0.25);
+}
+
+.step-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-xs);
+    filter: drop-shadow(0 0 8px rgba(30, 64, 175, 0.3));
+}
+
+.step-number-badge {
+    position: absolute;
+    top: var(--space-sm);
+    right: var(--space-sm);
+    width: 38px;
+    height: 38px;
+    background: var(--color-accent-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(30, 64, 175, 0.5);
+}
+
+.step-number {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-bg-primary);
+}
+
+.step-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.step-description {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin: 0;
+    text-align: center;
+}
+
+/* CTA Section */
+.process-cta {
+    padding: var(--space-3xl) 0;
+    background: var(--color-bg-primary);
+    text-align: center;
+}
+
+.cta-content {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    font-size: var(--font-size-4xl);
+    margin-bottom: var(--space-md);
+    color: var(--color-text-primary);
+}
+
+.cta-description {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2xl);
+}
+
+.cta-button {
+    display: inline-block;
+    padding: var(--space-md) var(--space-2xl);
+    background: var(--color-accent-primary);
+    color: var(--color-bg-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+}
+
+.cta-button:hover {
+    background: var(--color-accent-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .steps-grid::before {
+        left: 25px;
+        transform: none;
+    }
+
+    .step-card {
+        width: calc(100% - 50px);
+        margin-left: 50px !important;
+        margin-right: 0 !important;
+        min-height: 120px;
+    }
+
+    .step-card:nth-child(odd),
+    .step-card:nth-child(even) {
+        margin-left: 50px !important;
+        margin-right: 0 !important;
+        transform: translateX(50%);
+    }
+
+    .step-card.visible:nth-child(odd),
+    .step-card.visible:nth-child(even) {
+        transform: translateX(0);
+        animation: slideFromCenterMobile 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideFromCenterMobile {
+        0% {
+            opacity: 0;
+            transform: translateX(50%);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .page-title {
+        font-size: var(--font-size-4xl);
+    }
+
+    .page-subtitle {
+        font-size: var(--font-size-lg);
+    }
+
+    .step-icon {
+        font-size: 2rem;
+    }
+
+    .step-title {
+        font-size: var(--font-size-base);
+    }
+
+    .step-description {
+        font-size: var(--font-size-xs);
+    }
+
+    .cta-title {
+        font-size: var(--font-size-3xl);
+    }
+}
