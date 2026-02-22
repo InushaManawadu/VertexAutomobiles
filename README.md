@@ -1,4 +1,4 @@
-# AutoLanka - Car Sales Website
+# Vertex Automobiles - Car Sales Website
 
 A modern, premium car sales website built with React.js for the Sri Lankan market. Features a sophisticated dark theme, intuitive navigation, and localStorage-based data management.
 
