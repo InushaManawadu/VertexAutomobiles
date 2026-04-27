@@ -95,7 +95,7 @@ const ImportProcess = () => {
             <section className="process-steps">
                 <div className="container">
                     <div className="steps-grid">
-                        {steps.map((step, index) => (
+                        {steps.map((step) => (
                             <div
                                 key={step.number}
                                 className="step-card"

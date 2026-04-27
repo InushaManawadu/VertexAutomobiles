@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { getCars, deleteCar, deleteCars, formatPrice } from '../utils/storage';
+import { getCachedCars, getCars, deleteCar, deleteCars, formatPrice } from '../utils/storage';
 import AdminCarForm from '../components/AdminCarForm';
+import { auth } from '../config/firebase';
+import { browserSessionPersistence, onAuthStateChanged, setPersistence, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { Plus, Edit2, Trash2, LogOut, ChevronRight } from 'lucide-react';
 import './Admin.css';
 
 const Admin = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [cars, setCars] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -13,20 +16,31 @@ const Admin = () => {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const ACCESS_KEY = 'admin123';
-
     useEffect(() => {
-        const authStatus = sessionStorage.getItem('admin_auth');
-        if (authStatus === 'true') {
-            setIsAuthenticated(true);
-            loadCars();
-        }
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setIsAuthenticated(Boolean(user));
+            if (user) {
+                loadCars();
+            } else {
+                setCars([]);
+            }
+        });
+
+        return unsubscribe;
     }, []);
 
-    const loadCars = async () => {
-        setIsLoading(true);
+    const loadCars = async ({ showCachedFirst = true } = {}) => {
+        const cachedCars = showCachedFirst ? getCachedCars() : [];
+
+        if (cachedCars.length > 0) {
+            setCars(cachedCars);
+            setIsLoading(false);
+        } else {
+            setIsLoading(true);
+        }
+
         try {
-            const data = await getCars();
+            const data = await getCars({ forceRefresh: true });
             setCars(data);
         } catch (err) {
             console.error("Failed to load cars", err);
@@ -35,21 +49,24 @@ const Admin = () => {
         }
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        if (password === ACCESS_KEY) {
-            setIsAuthenticated(true);
+        setIsLoading(true);
+        try {
+            await setPersistence(auth, browserSessionPersistence);
+            await signInWithEmailAndPassword(auth, email.trim(), password);
             setError('');
-            sessionStorage.setItem('admin_auth', 'true');
-            loadCars();
-        } else {
-            setError('Invalid access key. Please try again.');
+            setPassword('');
+        } catch (err) {
+            console.error("Admin login failed:", err);
+            setError('Invalid admin email or password.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleLogout = () => {
-        setIsAuthenticated(false);
-        sessionStorage.removeItem('admin_auth');
+    const handleLogout = async () => {
+        await signOut(auth);
     };
 
     const handleDelete = async (id) => {
@@ -62,7 +79,7 @@ const Admin = () => {
             try {
                 await deleteCar(id);
                 console.log("Delete operation finished successfully in storage.");
-                await loadCars();
+                await loadCars({ showCachedFirst: false });
             } catch (err) {
                 console.error("Deletion failed:", err);
                 alert(`Error deleting vehicle: ${err.message}`);
@@ -79,12 +96,13 @@ const Admin = () => {
         console.log("Clear All request received");
 
         const confirmClear = window.confirm('Are you sure you want to delete ALL vehicles? This cannot be undone.');
-        if (confirmClear) {
+        const typedConfirmation = confirmClear ? window.prompt('Type DELETE to confirm clearing the entire inventory.') : '';
+        if (typedConfirmation === 'DELETE') {
             setIsLoading(true);
             try {
                 await deleteCars();
                 console.log("Clear All operation finished successfully in storage.");
-                await loadCars();
+                await loadCars({ showCachedFirst: false });
             } catch (err) {
                 console.error("Clear all failed:", err);
                 alert(`Error clearing inventory: ${err.message}`);
@@ -108,7 +126,7 @@ const Admin = () => {
 
     const handleFormSubmit = () => {
         setIsFormOpen(false);
-        loadCars();
+        loadCars({ showCachedFirst: false });
     };
 
     if (!isAuthenticated) {
@@ -118,21 +136,31 @@ const Admin = () => {
                     <div className="login-header">
                         <span className="login-icon">🔐</span>
                         <h1>Admin Access</h1>
-                        <p>Please enter your access key to manage inventory</p>
+                        <p>Sign in with your authorized admin account</p>
                     </div>
                     <form onSubmit={handleLogin}>
                         <div className="form-group">
                             <input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                placeholder="Admin Email"
+                                autoComplete="username"
+                                autoFocus
+                                required
+                            />
+                            <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                placeholder="Access Key"
-                                autoFocus
+                                placeholder="Password"
+                                autoComplete="current-password"
+                                required
                             />
                             {error && <span className="error-message">{error}</span>}
                         </div>
-                        <button type="submit" className="btn-login">
-                            Login <ChevronRight size={18} />
+                        <button type="submit" className="btn-login" disabled={isLoading}>
+                            {isLoading ? 'Signing in...' : 'Login'} <ChevronRight size={18} />
                         </button>
                     </form>
                 </div>
@@ -193,7 +221,7 @@ const Admin = () => {
                                             <tr key={car.id}>
                                                 <td>
                                                     <div className="car-info-cell">
-                                                        <img src={car.images[0]} alt={car.name} className="table-car-img" />
+                                                        <img src={car.images[0]} alt={car.name} className="table-car-img" loading="lazy" decoding="async" />
                                                         <div className="car-name-info">
                                                             <span className="car-brand">{car.brand}</span>
                                                             <span className="car-model">{car.model}</span>
@@ -236,6 +264,7 @@ const Admin = () => {
 
             {isFormOpen && (
                 <AdminCarForm
+                    key={editingCar?.id || 'new-car'}
                     car={editingCar}
                     onClose={() => setIsFormOpen(false)}
                     onSubmit={handleFormSubmit}

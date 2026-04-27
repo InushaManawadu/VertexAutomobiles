@@ -42,7 +42,7 @@ const Footer = () => {
                                 </a>
                             </li>
                             <li>
-                                <span>Colombo, Sri Lanka</span>
+                                <span>Kurunegala, Sri Lanka</span>
                             </li>
                         </ul>
                     </div>

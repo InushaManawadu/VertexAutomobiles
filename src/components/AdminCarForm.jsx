@@ -1,10 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { addCar, updateCar } from '../utils/storage';
 import { X, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
 import './AdminCarForm.css';
 
-const AdminCarForm = ({ car, onClose, onSubmit }) => {
-    const [formData, setFormData] = useState({
+const createInitialFormData = (car) => {
+    if (car) {
+        return {
+            ...car,
+            price: car.price.toString(),
+            mileage: car.mileage.toString()
+        };
+    }
+
+    return {
         name: '',
         brand: '',
         model: '',
@@ -16,24 +24,18 @@ const AdminCarForm = ({ car, onClose, onSubmit }) => {
         grade: 'Excellent',
         engineCapacity: '',
         color: '',
-        location: 'Colombo',
+        location: 'Kurunegala, Sri Lanka',
         description: '',
         features: [],
         images: []
-    });
+    };
+};
+
+const AdminCarForm = ({ car, onClose, onSubmit }) => {
+    const [formData, setFormData] = useState(() => createInitialFormData(car));
 
     const [newFeature, setNewFeature] = useState('');
     const [newImageUrl, setNewImageUrl] = useState('');
-
-    useEffect(() => {
-        if (car) {
-            setFormData({
-                ...car,
-                price: car.price.toString(),
-                mileage: car.mileage.toString()
-            });
-        }
-    }, [car]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -126,7 +128,7 @@ const AdminCarForm = ({ car, onClose, onSubmit }) => {
             onSubmit();
         } catch (error) {
             console.error("Submission error:", error);
-            alert("Failed to save vehicle details. Please check your Firebase rules.");
+            alert(error.message || "Failed to save vehicle details. Please check your admin permissions.");
         }
     };
 

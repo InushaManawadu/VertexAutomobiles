@@ -1,0 +1,75 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.uid in [
+          "Zws0JQXjMFPMg2lbvpsY6maBiuF3"
+        ];
+    }
+
+    function hasValidCarShape() {
+      let data = request.resource.data;
+
+      return data.keys().hasOnly([
+          "name",
+          "brand",
+          "model",
+          "year",
+          "price",
+          "mileage",
+          "fuelType",
+          "transmission",
+          "grade",
+          "engineCapacity",
+          "color",
+          "location",
+          "description",
+          "features",
+          "images"
+        ])
+        && data.keys().hasAll([
+          "name",
+          "brand",
+          "model",
+          "year",
+          "price",
+          "mileage",
+          "fuelType",
+          "transmission",
+          "grade",
+          "engineCapacity",
+          "color",
+          "location",
+          "features",
+          "images"
+        ])
+        && data.name is string && data.name.size() > 0 && data.name.size() <= 120
+        && data.brand is string && data.brand.size() > 0 && data.brand.size() <= 80
+        && data.model is string && data.model.size() > 0 && data.model.size() <= 80
+        && data.year is int && data.year >= 1900 && data.year <= 2100
+        && data.price is int && data.price >= 0
+        && data.mileage is int && data.mileage >= 0
+        && data.fuelType is string && data.fuelType.size() > 0 && data.fuelType.size() <= 40
+        && data.transmission is string && data.transmission.size() > 0 && data.transmission.size() <= 40
+        && data.grade is string && data.grade.size() > 0 && data.grade.size() <= 80
+        && data.engineCapacity is string && data.engineCapacity.size() > 0 && data.engineCapacity.size() <= 40
+        && data.color is string && data.color.size() > 0 && data.color.size() <= 80
+        && data.location is string && data.location.size() > 0 && data.location.size() <= 120
+        && (!("description" in data) || (data.description is string && data.description.size() <= 2000))
+        && data.features is list && data.features.size() <= 50
+        && data.images is list && data.images.size() > 0 && data.images.size() <= 20;
+    }
+
+    match /cars/{carId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && hasValidCarShape();
+      allow delete: if isAdmin();
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

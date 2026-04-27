@@ -1,5 +1,4 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -12,7 +11,7 @@ import ImportProcess from './pages/ImportProcess';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/">
       <div className="app">
         <Navbar />
         <main className="main-content">

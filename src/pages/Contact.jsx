@@ -147,7 +147,7 @@ const Contact = () => {
                                 <div className="contact-method">
                                     <div className="method-details">
                                         <h3>Address</h3>
-                                        <p>Colombo, Sri Lanka</p>
+                                        <p>Kurunegala, Sri Lanka</p>
                                     </div>
                                 </div>
                             </div>

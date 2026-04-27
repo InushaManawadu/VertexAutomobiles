@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './About.css';
 
 const About = () => {
@@ -134,9 +135,9 @@ const About = () => {
                 <section className="about-cta">
                     <h2>Ready to Find Your Perfect Car?</h2>
                     <p>Browse our collection of quality pre-owned vehicles today</p>
-                    <a href="/stock" className="btn-primary">
+                    <Link to="/stock" className="btn-primary">
                         View Our Stock
-                    </a>
+                    </Link>
                 </section>
             </div>
         </div>

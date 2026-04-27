@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import CarCard from '../components/CarCard';
-import { getCars } from '../utils/storage';
+import { subscribeToCars } from '../utils/storage';
 import './Stock.css';
 
 const Stock = () => {
@@ -8,18 +8,18 @@ const Stock = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const loadCars = async () => {
-            setIsLoading(true);
-            try {
-                const loadedCars = await getCars();
-                setCars(loadedCars);
-            } catch (error) {
+        const unsubscribe = subscribeToCars(
+            (updatedCars) => {
+                setCars(updatedCars);
+                setIsLoading(false);
+            },
+            (error) => {
                 console.error("Error loading cars:", error);
-            } finally {
                 setIsLoading(false);
             }
-        };
-        loadCars();
+        );
+
+        return unsubscribe;
     }, []);
 
     return (
