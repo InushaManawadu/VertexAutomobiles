@@ -77,6 +77,12 @@ const CarDetail = () => {
                         <div className="main-image-wrapper">
                             <img
                                 src={car.images[selectedImage]}
+                                alt=""
+                                className="main-image-backdrop"
+                                aria-hidden="true"
+                            />
+                            <img
+                                src={car.images[selectedImage]}
                                 alt={car.name}
                                 className="main-image"
                                 loading="eager"
