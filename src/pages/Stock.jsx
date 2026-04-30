@@ -24,26 +24,9 @@ const Stock = () => {
 
     return (
         <div className="stock">
-            {/* Hero Section */}
-            <section className="stock-hero">
-                <div className="container">
-                    <h1 className="page-title">Our Stock</h1>
-                    <p className="page-subtitle">
-                        Browse our collection of quality pre-owned vehicles
-                    </p>
-                </div>
-            </section>
-
             {/* Cars Grid */}
             <section className="cars-section">
                 <div className="container">
-                    <div className="section-header">
-                        <h2 className="section-title">Available Cars</h2>
-                        <p className="section-subtitle">
-                            {cars.length} {cars.length === 1 ? 'car' : 'cars'} available
-                        </p>
-                    </div>
-
                     {isLoading ? (
                         <div className="loading-state">
                             <div className="spinner"></div>

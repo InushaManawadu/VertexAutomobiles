@@ -1,5 +1,5 @@
 .footer {
-    background: var(--color-bg-secondary);
+    background: linear-gradient(180deg, rgba(13, 20, 30, 0.96), rgba(8, 11, 16, 1));
     border-top: 1px solid var(--color-border-primary);
     margin-top: var(--space-3xl);
     padding: var(--space-3xl) 0 var(--space-xl);
@@ -36,7 +36,7 @@
 
 .footer-description {
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
     line-height: var(--line-height-relaxed);
     margin: 0;
 }
@@ -44,7 +44,7 @@
 .footer-heading {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
-    color: #ffffff;
+    color: var(--color-text-primary);
     margin: 0;
 }
 
@@ -57,7 +57,7 @@
 
 .footer-links a {
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
     text-decoration: none;
     transition: color var(--transition-fast);
     display: inline-block;
@@ -80,11 +80,11 @@
     align-items: center;
     gap: var(--space-sm);
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
 }
 
 .footer-contact a {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
     text-decoration: none;
     transition: color var(--transition-fast);
 }
@@ -110,9 +110,9 @@
     gap: var(--space-sm);
     padding: var(--space-sm) var(--space-md);
     font-size: var(--font-size-sm);
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--color-text-secondary);
     text-decoration: none;
-    background: var(--color-bg-tertiary);
+    background: rgba(22, 33, 49, 0.72);
     border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-md);
     transition: all var(--transition-fast);

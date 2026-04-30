@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { addCar, updateCar } from '../utils/storage';
-import { X, Plus, Trash2, Image as ImageIcon } from 'lucide-react';
+import { uploadCarImages } from '../utils/imageUpload';
+import { X, Plus, Upload, Image as ImageIcon } from 'lucide-react';
 import './AdminCarForm.css';
 
 const createInitialFormData = (car) => {
@@ -36,6 +37,8 @@ const AdminCarForm = ({ car, onClose, onSubmit }) => {
 
     const [newFeature, setNewFeature] = useState('');
     const [newImageUrl, setNewImageUrl] = useState('');
+    const [isUploading, setIsUploading] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -78,6 +81,31 @@ const AdminCarForm = ({ car, onClose, onSubmit }) => {
         }));
     };
 
+    const handleImageUpload = async (e) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        setIsUploading(true);
+        setUploadProgress(0);
+
+        try {
+            const uploadedUrls = await uploadCarImages(files, setUploadProgress);
+            setFormData(prev => ({
+                ...prev,
+                images: [...prev.images, ...uploadedUrls]
+            }));
+        } catch (error) {
+            console.error("Image upload failed:", error);
+            alert(error.message || "Failed to upload images. Please try again.");
+        } finally {
+            setIsUploading(false);
+            setUploadProgress(0);
+            e.target.value = '';
+        }
+    };
+
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && e.target.name === 'newFeature') {
             e.preventDefault();
@@ -89,6 +117,11 @@ const AdminCarForm = ({ car, onClose, onSubmit }) => {
         e.preventDefault();
 
         // Basic validation
+        if (isUploading) {
+            alert('Please wait for image uploads to finish before saving.');
+            return;
+        }
+
         if (!formData.brand || !formData.model || !formData.price || !formData.mileage || (formData.images.length === 0 && !newImageUrl)) {
             alert('Please fill in all required fields and add at least one image.');
             return;
@@ -209,13 +242,31 @@ const AdminCarForm = ({ car, onClose, onSubmit }) => {
                         <div className="form-section">
                             <h3>Images & Media</h3>
                             <div className="image-input-area">
+                                <label className={`upload-dropzone ${isUploading ? 'uploading' : ''}`}>
+                                    <Upload size={24} />
+                                    <span>{isUploading ? `Uploading ${uploadProgress}%` : 'Upload vehicle photos'}</span>
+                                    <small>JPG, PNG, or WebP up to 8 MB each</small>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleImageUpload}
+                                        disabled={isUploading}
+                                    />
+                                    {isUploading && (
+                                        <span className="upload-progress">
+                                            <span style={{ width: `${uploadProgress}%` }}></span>
+                                        </span>
+                                    )}
+                                </label>
+
                                 <div className="input-group">
-                                    <label>Image URL</label>
+                                    <label>Image URL fallback</label>
                                     <div className="input-with-btn">
                                         <input
                                             value={newImageUrl}
                                             onChange={(e) => setNewImageUrl(e.target.value)}
-                                            placeholder="Paste image URL here..."
+                                            placeholder="Paste image URL if needed..."
                                         />
                                         <button type="button" onClick={handleAddImage} className="btn-add-item"><Plus size={20} /></button>
                                     </div>

@@ -28,149 +28,138 @@
     margin: 0 auto;
 }
 
-/* Steps Grid */
 .process-steps {
     padding: var(--space-3xl) 0;
-    background: var(--color-bg-secondary);
+    background: linear-gradient(180deg, rgba(16, 23, 34, 0.62), rgba(8, 11, 16, 0.84));
 }
 
 .steps-grid {
     position: relative;
-    max-width: 1000px;
+    max-width: 1080px;
     margin: 0 auto;
-    padding: var(--space-2xl) 0;
+    padding: var(--space-xl) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
 }
 
-/* Center vertical line */
 .steps-grid::before {
     content: '';
     position: absolute;
     left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg,
-            var(--color-accent-primary) 0%,
-            var(--color-accent-secondary) 100%);
+    top: var(--space-xl);
+    bottom: var(--space-xl);
+    width: 2px;
+    background: linear-gradient(180deg, transparent, rgba(214, 168, 79, 0.5), rgba(29, 78, 216, 0.5), transparent);
     transform: translateX(-50%);
     z-index: 0;
 }
 
+.timeline-item {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
+    align-items: center;
+    min-height: 128px;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.timeline-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: calc(50% - 36px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border-secondary));
+    z-index: 0;
+}
+
+.timeline-item.left::before {
+    left: 0;
+}
+
+.timeline-item.right::before {
+    right: 0;
+    background: linear-gradient(90deg, var(--color-border-secondary), transparent);
+}
+
+.timeline-node {
+    grid-column: 2;
+    justify-self: center;
+    width: 46px;
+    height: 46px;
+    background: #173b86;
+    border: 1px solid rgba(214, 168, 79, 0.45);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
 .step-card {
     position: relative;
-    background: var(--color-bg-tertiary);
+    background: linear-gradient(180deg, rgba(18, 28, 43, 0.94), rgba(10, 15, 23, 0.98));
     border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-lg);
-    padding: var(--space-md) var(--space-lg);
-    margin-bottom: var(--space-xl);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    opacity: 0;
-    width: 42%;
+    padding: var(--space-lg);
+    transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast);
     z-index: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 140px;
+    gap: var(--space-sm);
 }
 
-/* Alternating left and right - start from center */
-.step-card:nth-child(odd) {
-    margin-left: 0;
-    margin-right: auto;
-    transform: translateX(50%);
+.timeline-item.left .step-card {
+    grid-column: 1;
+    margin-right: var(--space-xl);
 }
 
-.step-card:nth-child(even) {
-    margin-left: auto;
-    margin-right: 0;
-    transform: translateX(-50%);
+.timeline-item.right .step-card {
+    grid-column: 3;
+    margin-left: var(--space-xl);
 }
 
-.step-card.visible {
-    opacity: 1;
-}
-
-.step-card.visible:nth-child(odd) {
-    transform: translateX(0);
-    animation: slideFromCenter 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.step-card.visible:nth-child(even) {
-    transform: translateX(0);
-    animation: slideFromCenterRight 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-@keyframes slideFromCenter {
-    0% {
-        opacity: 0;
-        transform: translateX(50%);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideFromCenterRight {
-    0% {
-        opacity: 0;
-        transform: translateX(-50%);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
+.timeline-item.left .step-card {
+    text-align: right;
 }
 
 .step-card:hover {
     border-color: var(--color-accent-primary);
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 15px 30px rgba(30, 64, 175, 0.25);
-}
-
-.step-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-xs);
-    filter: drop-shadow(0 0 8px rgba(30, 64, 175, 0.3));
-}
-
-.step-number-badge {
-    position: absolute;
-    top: var(--space-sm);
-    right: var(--space-sm);
-    width: 38px;
-    height: 38px;
-    background: var(--color-accent-primary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 15px rgba(30, 64, 175, 0.5);
+    box-shadow: var(--shadow-md);
 }
 
 .step-number {
     font-size: var(--font-size-base);
     font-weight: var(--font-weight-bold);
-    color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+}
+
+.step-label {
+    color: var(--color-accent-warm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
 }
 
 .step-title {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     color: var(--color-text-primary);
-    margin-bottom: 4px;
-    text-align: center;
+    margin: 0;
 }
 
 .step-description {
-    font-size: var(--font-size-xs);
+    font-size: var(--font-size-sm);
     color: var(--color-text-secondary);
-    line-height: 1.4;
+    line-height: var(--line-height-relaxed);
     margin: 0;
-    text-align: center;
 }
 
 /* CTA Section */
@@ -200,59 +189,53 @@
 .cta-button {
     display: inline-block;
     padding: var(--space-md) var(--space-2xl);
-    background: var(--color-accent-primary);
-    color: var(--color-bg-primary);
+    background: #173b86;
+    color: var(--color-text-primary);
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     text-decoration: none;
     border-radius: var(--radius-lg);
     transition: all var(--transition-base);
-    box-shadow: 0 4px 15px rgba(30, 64, 175, 0.3);
+    box-shadow: none;
 }
 
 .cta-button:hover {
-    background: var(--color-accent-secondary);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.4);
+    background: #1e4597;
+    box-shadow: none;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .steps-grid::before {
-        left: 25px;
+        left: 23px;
         transform: none;
     }
 
-    .step-card {
-        width: calc(100% - 50px);
-        margin-left: 50px !important;
-        margin-right: 0 !important;
-        min-height: 120px;
+    .timeline-item {
+        grid-template-columns: 46px 1fr;
+        min-height: 0;
+        align-items: start;
     }
 
-    .step-card:nth-child(odd),
-    .step-card:nth-child(even) {
-        margin-left: 50px !important;
-        margin-right: 0 !important;
-        transform: translateX(50%);
+    .timeline-item::before {
+        left: 23px !important;
+        right: auto !important;
+        top: 23px;
+        width: var(--space-xl);
+        background: var(--color-border-secondary) !important;
     }
 
-    .step-card.visible:nth-child(odd),
-    .step-card.visible:nth-child(even) {
-        transform: translateX(0);
-        animation: slideFromCenterMobile 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .timeline-node {
+        grid-column: 1;
+        width: 46px;
+        height: 46px;
     }
 
-    @keyframes slideFromCenterMobile {
-        0% {
-            opacity: 0;
-            transform: translateX(50%);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateX(0);
-        }
+    .timeline-item.left .step-card,
+    .timeline-item.right .step-card {
+        grid-column: 2;
+        margin: 0 0 0 var(--space-lg);
+        text-align: left;
     }
 
     .page-title {
@@ -263,16 +246,12 @@
         font-size: var(--font-size-lg);
     }
 
-    .step-icon {
-        font-size: 2rem;
-    }
-
     .step-title {
         font-size: var(--font-size-base);
     }
 
     .step-description {
-        font-size: var(--font-size-xs);
+        font-size: var(--font-size-sm);
     }
 
     .cta-title {

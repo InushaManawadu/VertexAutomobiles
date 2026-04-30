@@ -63,11 +63,10 @@ const ImportProcess = () => {
             }
         );
 
-        // Observe all step cards
-        const cards = document.querySelectorAll('.step-card');
-        cards.forEach((card) => {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach((item) => {
             if (observerRef.current) {
-                observerRef.current.observe(card);
+                observerRef.current.observe(item);
             }
         });
 
@@ -98,13 +97,16 @@ const ImportProcess = () => {
                         {steps.map((step) => (
                             <div
                                 key={step.number}
-                                className="step-card"
+                                className={`timeline-item ${step.number % 2 === 0 ? 'right' : 'left'}`}
                             >
-                                <div className="step-number-badge">
+                                <div className="timeline-node">
                                     <span className="step-number">{step.number}</span>
                                 </div>
-                                <h3 className="step-title">{step.title}</h3>
-                                <p className="step-description">{step.description}</p>
+                                <article className="step-card">
+                                    <span className="step-label">Step {String(step.number).padStart(2, '0')}</span>
+                                    <h3 className="step-title">{step.title}</h3>
+                                    <p className="step-description">{step.description}</p>
+                                </article>
                             </div>
                         ))}
                     </div>

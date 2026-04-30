@@ -4,13 +4,13 @@
     align-items: center;
     justify-content: center;
     padding: var(--space-xl);
-    background: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+    background: radial-gradient(circle at 50% 50%, rgba(15, 42, 95, 0.22) 0%, var(--color-bg-primary) 70%);
 }
 
 .admin-login-card {
-    background: rgba(30, 30, 30, 0.8);
+    background: var(--glass-bg);
     backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     padding: var(--space-3xl);
     width: 100%;
@@ -48,8 +48,8 @@
 .admin-login-card input {
     width: 100%;
     padding: var(--space-lg);
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(8, 11, 16, 0.62);
+    border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-md);
     color: white;
     font-size: 1.1rem;
@@ -60,8 +60,8 @@
 .admin-login-card input:focus {
     outline: none;
     border-color: var(--color-accent-primary);
-    background: rgba(59, 130, 246, 0.05);
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background: rgba(15, 42, 95, 0.24);
+    box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.14);
 }
 
 .error-message {
@@ -72,7 +72,7 @@
 }
 
 .btn-login {
-    background: var(--color-accent-primary);
+    background: #173b86;
     color: white;
     border: none;
     padding: var(--space-lg);
@@ -88,9 +88,8 @@
 }
 
 .btn-login:hover {
-    background: var(--color-accent-primary-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    background: #1e4597;
+    border-color: rgba(214, 168, 79, 0.5);
 }
 
 /* Dashboard Styles */
@@ -129,7 +128,7 @@
 }
 
 .btn-add {
-    background: var(--color-accent-primary);
+    background: #173b86;
     color: white;
     border: none;
     padding: var(--space-md) var(--space-xl);
@@ -143,7 +142,7 @@
 }
 
 .btn-add:hover {
-    background: var(--color-accent-primary-hover);
+    background: #1e4597;
 }
 
 .btn-logout {
@@ -186,8 +185,8 @@
 }
 
 .inventory-table-wrapper {
-    background: rgba(20, 20, 20, 0.5);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(13, 20, 30, 0.72);
+    border: 1px solid var(--color-border-primary);
     border-radius: var(--radius-lg);
     overflow-x: auto;
 }
@@ -266,7 +265,7 @@
 }
 
 .btn-edit:hover {
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(29, 78, 216, 0.14);
     border-color: var(--color-accent-primary);
 }
 

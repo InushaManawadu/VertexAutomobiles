@@ -73,8 +73,7 @@
 
 .feature-card:hover {
     border-color: var(--color-accent-primary);
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl), var(--shadow-glow);
+    box-shadow: var(--shadow-md);
 }
 
 .feature-icon {
@@ -154,8 +153,7 @@
 
 .mission-card:hover {
     border-color: var(--color-accent-primary);
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .mission-card h2 {
